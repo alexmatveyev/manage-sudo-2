@@ -1,0 +1,76 @@
+# https://www.techbeatly.com/2019/02/sssd-ad-integration-on-rhel7-using-ansible.html
+---
+- name: Generate sudo groups
+  hosts: all
+  var_files:
+    ./AD_Domain_Groups
+
+    tasks:
+    - name: Restrict access based on specific ad group
+      command: /bin/bash -c "/usr/sbin/realm permit -g {{ group_list }}"
+      notify:
+        - restart sssd
+
+    - name: Clearing and updating sssd sudo groups
+      file:
+        path: /etc/sudoers.d/installSssd
+        state: absent
+
+    - name: Add sudoers groups for cassandra systems
+      lineinfile:
+        dest: /etc/sudoers.d/installSssd
+        line: "%{{ item }}@{{ addomain }} ALL=(ALL) NOPASSWD: ALL"
+        create: yes
+      with_items: "{{ all_cassandra_sudo_list }}"
+      when: inventory_hostname in groups['all_cassandra']
+      ignore_errors: true
+
+    - name: Add sudoers groups for ora db systems
+      lineinfile:
+        dest: /etc/sudoers.d/installSssd
+        line: "%{{ item }}@{{ addomain }} ALL=(ALL) NOPASSWD: ALL"
+        create: yes
+      with_items: "{{ oracle_sudo_list }}"
+      when: inventory_hostname in groups['oracle']
+      ignore_errors: true
+
+    - name: Add sudoers groups for ora db systems
+      lineinfile:
+        dest: /etc/sudoers.d/installSssd
+        line: "%{{ item }}@{{ addomain }} ALL=(ALL) NOPASSWD: ALL"
+        create: yes
+      with_items: "{{ wave1_sudo_list }}"
+      when: inventory_hostname in groups['wave1']
+      ignore_errors: true
+
+    - name: Add sudoers groups for ora db systems
+      lineinfile:
+        dest: /etc/sudoers.d/installSssd
+        line: "%{{ item }}@{{ addomain }} ALL=(ALL) NOPASSWD: ALL"
+        create: yes
+      with_items: "{{ ldap_sudo_list }}"
+      when: inventory_hostname in groups['ldap']
+      ignore_errors: true
+
+    - name: Add sudoers groups for ora db systems
+      lineinfile:
+        dest: /etc/sudoers.d/installSssd
+        line: "%{{ item }}@{{ addomain }} ALL=(ALL) NOPASSWD: ALL"
+        create: yes
+      with_items: "{{ wave2_sudo_list }}"
+      when: inventory_hostname in groups['wave2']
+      ignore_errors: true
+###############################################
+    - name: configure root history by SUDOER
+      blockinfile:
+        path: /root/.bashrc
+        block: |
+          HISTFILE="$HOME/.bash_history_${SUDO_USER}_$(date '+%F_%T')"
+          export HISTFILE
+      when: realmd_bound|failed
+###############################################
+  handlers:
+    - name: restart sssd
+      service:
+        name: sssd
+        state: restarted
