@@ -2,10 +2,10 @@
 ---
 - name: Generate sudo groups
   hosts: all
-  var_files:
+  vars_files:
     ./AD_Domain_Groups
 
-    tasks:
+  tasks:
 #    - name: Restrict access based on specific ad group
 #      command: /bin/bash -c "/usr/sbin/realm permit -g {{ group_list }}"
 #      notify:
