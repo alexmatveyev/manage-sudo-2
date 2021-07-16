@@ -22,7 +22,7 @@
         line: "%{{ item }}@{{ addomain }} ALL=(ALL) NOPASSWD: ALL"
         create: yes
       with_items: "{{ all_cassandra_sudo_list }}"
-      when: inventory_hostname in groups['all_cassandra']
+      when: inventory_hostname in groups['cassandra']
       ignore_errors: true
 
     - name: Add sudoers groups for ora db systems
