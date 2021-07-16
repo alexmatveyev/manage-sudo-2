@@ -1,0 +1,21 @@
+all_cassandra_sudo_list:
+  - LNX-Admins-GG
+  - CAS-Admins-GG
+  - ROS_SYSOPS_ADMINS
+
+oracle_sudo_list:
+  - LNX-Admins-GG
+  - ROS_SYSOPS_ADMINS
+  - ORC-Admins-GG
+
+wave1_sudo_list:
+  - LNX-Admins-GG
+  - ROS_SYSOPS_ADMINS
+
+ldap_sudo_list:
+  - LNX-Admins-GG
+  - ROS_SYSOPS_ADMINS
+
+wave2_sudo_list:
+  - LNX-Admins-GG
+  - ROS_SYSOPS_ADMINS
