@@ -6,10 +6,10 @@
     ./AD_Domain_Groups
 
     tasks:
-    - name: Restrict access based on specific ad group
-      command: /bin/bash -c "/usr/sbin/realm permit -g {{ group_list }}"
-      notify:
-        - restart sssd
+#    - name: Restrict access based on specific ad group
+#      command: /bin/bash -c "/usr/sbin/realm permit -g {{ group_list }}"
+#      notify:
+#        - restart sssd
 
     - name: Clearing and updating sssd sudo groups
       file:
