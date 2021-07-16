@@ -60,17 +60,3 @@
       with_items: "{{ wave2_sudo_list }}"
       when: inventory_hostname in groups['wave2']
       ignore_errors: true
-###############################################
-    - name: configure root history by SUDOER
-      blockinfile:
-        path: /root/.bashrc
-        block: |
-          HISTFILE="$HOME/.bash_history_${SUDO_USER}_$(date '+%F_%T')"
-          export HISTFILE
-      when: realmd_bound|failed
-###############################################
-  handlers:
-    - name: restart sssd
-      service:
-        name: sssd
-        state: restarted
